@@ -1,0 +1,16 @@
+{
+  "name": "Chasing Toblerone",
+  "short_name": "Toblerone",
+  "description": "Roadbook, Hotel & Zimmerplan für die Chasing Toblerone Radtour (Barcelona ↔ Andorra)",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#12241C",
+  "theme_color": "#12241C",
+  "lang": "es",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
