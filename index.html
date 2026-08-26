@@ -71,8 +71,8 @@
 
   /* ---- Landing page ---- */
   .landing-cards{padding:22px 20px 28px;display:flex;flex-direction:column;gap:14px;}
-  .poster-wrap{padding:22px 28px 6px;display:flex;justify-content:center;}
-  .poster-img{width:78%;max-width:340px;border-radius:10px;box-shadow:0 18px 40px rgba(36,49,47,.22), 0 2px 8px rgba(36,49,47,.12);display:block;}
+  .poster-wrap{width:100%;margin:-2px 0 -1px;line-height:0;}
+  .poster-img{width:100%;display:block;-webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 68%, transparent 96%);mask-image:linear-gradient(to bottom, #000 0%, #000 68%, transparent 96%);}
   .navcard{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:var(--radius);padding:16px;background:#F7F0E0;cursor:pointer;text-align:left;width:100%;font-family:inherit;}
   .navcard .ic{flex:none;width:40px;height:40px;border-radius:10px;background:var(--pine-deep);color:var(--gold);display:flex;align-items:center;justify-content:center;}
   .navcard .ic svg{width:20px;height:20px;}
@@ -264,7 +264,7 @@
     <svg class="ridge on-dark" viewBox="0 0 400 34" preserveAspectRatio="none" style="margin-top:22px;"><path class="ridge-back" d="M0,34 L0,22 L45,9 L90,20 L135,6 L180,17 L225,4 L270,19 L315,8 L360,18 L400,10 L400,34 Z"></path><path class="ridge-front" d="M0,34 L0,27 L35,16 L70,25 L115,12 L155,24 L200,13 L240,26 L285,15 L330,25 L370,16 L400,24 L400,34 Z"></path></svg>
   </header>
   <div class="poster-wrap">
-    <img class="poster-img" src="images/event-poster.jpg" alt="Cartel oficial Chasing Toblerone, IV edición" loading="lazy">
+    <img class="poster-img" src="images/event-scene.jpg" alt="Ilustración del recorrido Chasing Toblerone: teleférico, montañas y ciclistas de camino a La Massana" loading="lazy">
   </div>
   <div class="landing-cards">
     <button class="navcard" data-goto="1"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h4l2-9 4 6 3-4h5"/><circle cx="6" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/></svg></span><span class="txt"><h4>Roadbook</h4><p>Etapas, horarios, tracks GPX y avituallamientos</p></span><span class="arrow">›</span></button>
