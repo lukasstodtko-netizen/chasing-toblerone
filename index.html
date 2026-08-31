@@ -39,16 +39,25 @@
   .ridge.on-dark .ridge-front{fill:var(--gold);opacity:.6;}
 
   /* ---- Top bar ---- */
-  .topbar{position:sticky;top:0;z-index:30;background:var(--pine-deep);display:flex;align-items:center;justify-content:space-between;padding:calc(8px + env(safe-area-inset-top)) 18px 8px;}
+  .topbar{position:sticky;top:0;z-index:30;background:var(--pine-deep);display:flex;align-items:center;gap:12px;padding:calc(8px + env(safe-area-inset-top)) 18px 8px;}
+  .menu-toggle{flex:none;background:none;border:none;color:#fff;padding:4px;margin:-4px 0;cursor:pointer;display:flex;}
+  .menu-toggle svg{width:22px;height:22px;}
   .brand{color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;}
-  .orga-toggle{background:none;border:1px solid rgba(255,255,255,.3);color:#E7DCC0;font-size:11px;padding:6px 12px;border-radius:999px;cursor:pointer;font-family:'Inter',sans-serif;}
+  .orga-toggle{margin-left:auto;flex:none;background:none;border:1px solid rgba(255,255,255,.3);color:#E7DCC0;font-size:11px;padding:6px 12px;border-radius:999px;cursor:pointer;font-family:'Inter',sans-serif;}
   body.orga .orga-toggle{background:var(--gold);color:var(--pine-deep);border-color:var(--gold);}
+  .navmenu-backdrop{position:fixed;inset:0;background:rgba(18,20,18,.35);z-index:39;}
+  .navmenu{position:absolute;top:calc(100% + 8px);left:14px;z-index:40;background:var(--paper);border-radius:var(--radius);box-shadow:0 12px 32px rgba(36,49,47,.28);padding:8px;min-width:200px;}
+  .navmenu-item{display:flex;align-items:center;gap:12px;width:100%;background:none;border:none;padding:11px 12px;border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left;}
+  .navmenu-item .ic{flex:none;width:22px;height:22px;color:var(--ink-soft);display:flex;}
+  .navmenu-item .ic svg{width:20px;height:20px;}
+  .navmenu-item.active{background:var(--gold-soft);color:var(--pine-deep);}
+  .navmenu-item.active .ic{color:var(--pine-deep);}
 
   /* ---- App shell: fixed max width, mobile app feel ---- */
   html{height:100%;overflow:hidden;background:var(--pine-deep);}
   body{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100vh;height:calc(var(--vh, 1vh) * 100);height:100dvh;margin:0;overflow:hidden;overscroll-behavior-y:none;background:var(--pine-deep);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);}
   .appshell{max-width:480px;margin:0 auto;background:var(--paper);height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 40px rgba(36,49,47,.08);}
-  .appshell > .topbar, .appshell > .bottomnav{flex:none;}
+  .appshell > .topbar{flex:none;position:relative;}
   /* content scrolls inside the shell, never the document — so the tab bar never scrolls away */
   .view-page > .app{max-width:none;min-height:0;background:transparent;box-shadow:none;}
 
@@ -60,14 +69,10 @@
   .views-wrap{flex:1;min-height:0;overflow:hidden;position:relative;}
   .views-track{display:flex;width:400%;height:100%;transition:transform .32s cubic-bezier(.22,.68,0,1);}
   .view-page{width:25%;height:100%;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;}
-  .view-page > .app{padding-bottom:16px;}
+  .view-page > .app{padding-bottom:calc(16px + env(safe-area-inset-bottom));}
 
   /* ---- Bottom tab bar: pinned to the true viewport edge, independent of any parent height math ---- */
-  .bottomnav{display:flex;position:relative;z-index:35;background:var(--pine-deep);border-top:1px solid rgba(255,255,255,.08);padding:4px calc(4px + min(env(safe-area-inset-right),20px)) calc(4px + min(env(safe-area-inset-bottom),34px)) calc(4px + min(env(safe-area-inset-left),20px));}
-  .bottomnav button{flex:1;background:none;border:none;color:#8A8272;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px;font-family:'Inter',sans-serif;font-size:10.5px;font-weight:600;cursor:pointer;}
-  .bottomnav button .ic{line-height:1;}
-  .bottomnav button .ic svg{width:20px;height:20px;}
-  .bottomnav button.active{color:var(--gold);}
+
 
   /* ---- Landing page ---- */
   .landing-cards{padding:22px 20px 28px;display:flex;flex-direction:column;gap:14px;}
@@ -251,8 +256,16 @@
 
 <div class="appshell">
 <div class="topbar">
+  <button class="menu-toggle" id="menu-toggle" aria-label="Menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg></button>
   <span class="brand">Chasing Project × MDNSS</span>
   <button class="orga-toggle" id="orga-toggle">Modo Organización</button>
+  <div class="navmenu-backdrop" id="navmenu-backdrop" hidden></div>
+  <div class="navmenu" id="navmenu" hidden>
+    <button class="navmenu-item active" data-view="0"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg></span>Inicio</button>
+    <button class="navmenu-item" data-view="1"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h4l2-9 4 6 3-4h5"/><circle cx="6" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/></svg></span>Roadbook</button>
+    <button class="navmenu-item" data-view="2"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19v-8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8"/><path d="M3 19h18"/><path d="M3 13h18"/><circle cx="7" cy="10.5" r="1.2"/></svg></span>Hotel</button>
+    <button class="navmenu-item" data-view="3"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r="0.6" fill="currentColor" stroke="none"/></svg></span>Info</button>
+  </div>
 </div>
 <div class="views-wrap">
 <div class="views-track" id="views-track">
@@ -466,12 +479,6 @@
 </div></div>
 </div>
 </div>
-<nav class="bottomnav" id="bottomnav">
-  <button data-view="0" class="active"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg></span>Inicio</button>
-  <button data-view="1"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h4l2-9 4 6 3-4h5"/><circle cx="6" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/></svg></span>Roadbook</button>
-  <button data-view="2"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19v-8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8"/><path d="M3 19h18"/><path d="M3 13h18"/><circle cx="7" cy="10.5" r="1.2"/></svg></span>Hotel</button>
-  <button data-view="3"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r="0.6" fill="currentColor" stroke="none"/></svg></span>Info</button>
-</nav>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -555,10 +562,16 @@ const track = document.getElementById('views-track');
 function goToPage(i){
   currentPage = Math.max(0, Math.min(PAGE_COUNT-1, i));
   track.style.transform = `translateX(-${currentPage*(100/PAGE_COUNT)}%)`;
-  document.querySelectorAll('.bottomnav button').forEach(b=> b.classList.toggle('active', parseInt(b.dataset.view)===currentPage));
+  document.querySelectorAll('.navmenu-item').forEach(b=> b.classList.toggle('active', parseInt(b.dataset.view)===currentPage));
 }
-document.querySelectorAll('.bottomnav button[data-view]').forEach(b=>{
-  b.addEventListener('click', ()=> goToPage(parseInt(b.dataset.view)));
+const navmenu = document.getElementById('navmenu');
+const navmenuBackdrop = document.getElementById('navmenu-backdrop');
+function openMenu(){ navmenu.hidden=false; navmenuBackdrop.hidden=false; }
+function closeMenu(){ navmenu.hidden=true; navmenuBackdrop.hidden=true; }
+document.getElementById('menu-toggle').addEventListener('click', ()=> navmenu.hidden ? openMenu() : closeMenu());
+navmenuBackdrop.addEventListener('click', closeMenu);
+document.querySelectorAll('.navmenu-item[data-view]').forEach(b=>{
+  b.addEventListener('click', ()=> { goToPage(parseInt(b.dataset.view)); closeMenu(); });
 });
 document.querySelectorAll('.navcard[data-goto]').forEach(b=>{
   b.addEventListener('click', ()=> goToPage(parseInt(b.dataset.goto)));
